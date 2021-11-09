@@ -1,16 +1,26 @@
 package com.amir.webFluxBasics.controller;
 
-import org.springframework.stereotype.Controller;
+import com.amir.webFluxBasics.service.StudentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
-@Controller
+import java.util.Map;
+
+@RestController
 public class StudentController {
 
-    @GetMapping(value = "student")
-    public Mono<String> getStudent(@PathVariable(name = "id") int id) {
-        return Mono.just("");
+    private final StudentService studentService;
+
+    @Autowired
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
+
+    @GetMapping(value = "student/{id}")
+    public Mono<Map<String, Object>> getStudent(@PathVariable int id) {
+        return studentService.getStudentData(id);
     }
 }
